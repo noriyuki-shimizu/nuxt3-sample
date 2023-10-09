@@ -1,6 +1,6 @@
 <template>
     <div>
-        サンプルページ
+        <h1>サンプルページ</h1>
         <NuxtLink to="/">トップページへ</NuxtLink>
     </div>
 </template>
