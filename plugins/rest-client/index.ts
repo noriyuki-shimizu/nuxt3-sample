@@ -4,7 +4,7 @@ import { hash as ohash } from "ohash";
 import { isNull } from 'lodash-es';
 import type { NitroFetchRequest } from 'nitropack'
 
-type FetchRaw<T = unknown, R extends NitroFetchRequest = NitroFetchRequest> = Parameters<(typeof $fetch<T, R>)['raw']>
+type FetchRawParameters<T = unknown, R extends NitroFetchRequest = NitroFetchRequest> = Parameters<(typeof $fetch<T, R>)['raw']>
 
 type AppFetchResponse<T> = {
     _data: FetchResponse<T>['_data']
@@ -27,7 +27,7 @@ export default defineNuxtPlugin(() => {
         baseURL: 'http://localhost:3001'
     })
 
-    const restClient = async <T = object>(request: FetchRaw<T>[0], options?: FetchRaw<T>[1]): Promise<AppFetchResponse<T>> => {
+    const restClient = async <T = object>(request: FetchRawParameters<T>[0], options?: FetchRawParameters<T>[1]): Promise<AppFetchResponse<T>> => {
         if (options?.isCache) {
             const hash = ohash(request);
             const cached = useSessionStorage<AppFetchResponse<T>>(hash, null, {
