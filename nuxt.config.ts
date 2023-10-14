@@ -4,4 +4,5 @@ export default defineNuxtConfig({
   css: ["@/assets/styles/main.css"],
   devtools: { enabled: true },
   plugins: ['@/plugins/rest-client/index.ts'],
+  modules: ['@vueuse/nuxt']
 })
