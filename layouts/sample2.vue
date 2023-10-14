@@ -1,12 +1,12 @@
 <template>
-    <div class="LayoutSample2">
-        <header :class="$style['LayoutSample2__Header']">
-            <span>Header 2  </span>
-        </header>
-        <div :class="$style['LayoutSample2__Body']">
-            <slot />
-        </div>
+  <div class="LayoutSample2">
+    <header :class="$style['LayoutSample2__Header']">
+      <span>Header 2  </span>
+    </header>
+    <div :class="$style['LayoutSample2__Body']">
+      <slot />
     </div>
+  </div>
 </template>
 
 <style module lang="scss">
