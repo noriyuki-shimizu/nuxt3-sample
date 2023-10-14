@@ -8,11 +8,16 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "start:mock": "json-server --watch db.json --port 3001"
+    "start:mock": "json-server --watch db.json --port 3001",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@types/lodash-es": "^4.17.9",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "eslint-plugin-vue": "^9.17.0",
     "json-server": "^0.17.4",
     "nuxt": "^3.7.4",
     "sass": "^1.69.0",
