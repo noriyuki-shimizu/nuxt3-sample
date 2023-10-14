@@ -1,0 +1,30 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+
+  "[markdown]": {
+    "editor.formatOnSave": false
+  },
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+  },
+
+  "eslint.validate": ["javascript", "typescript", "vue"],
+
+  "css.validate": false,
+  "scss.validate": false,
+  "javascript.format.enable": false,
+  "typescript.format.enable": false,
+
+  "typescript.referencesCodeLens.enabled": true
+
+  // TSの型推論結果をエディタ上に表示する (お好みで使用してください)
+  // "typescript.inlayHints.parameterNames.enabled": "all",
+  // "typescript.inlayHints.enumMemberValues.enabled": true,
+  // "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  // "typescript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true,
+  // "typescript.inlayHints.parameterTypes.enabled": true,
+  // "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+  // "typescript.inlayHints.variableTypes.enabled": true
+}
