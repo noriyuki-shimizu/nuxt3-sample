@@ -1,7 +1,8 @@
 import type { FetchResponse } from 'ofetch'
-import { hash as ohash } from "ohash";
-import { isNull } from 'lodash-es';
+import { isNull, isString } from 'lodash-es';
 import type { NitroFetchRequest } from 'nitropack'
+import * as serverCrypto from 'crypto'
+import { callWithNuxt } from 'nuxt/app';
 
 type FetchRawParameters<T = unknown, R extends NitroFetchRequest = NitroFetchRequest> = Parameters<(typeof $fetch<T, R>)['raw']>
 
@@ -10,6 +11,20 @@ type AppFetchResponse<T> = {
     headers: Record<string, string>
     status: FetchResponse<T>['status']
     statusText: FetchResponse<T>['statusText']
+}
+
+const getHash = async (text: string): Promise<string> => {
+    if (process.server) {
+        return serverCrypto.createHash('sha256')
+            .update(text)
+            .digest('base64')
+            .slice(0, 10)
+    }
+    const encoder = new TextEncoder()
+    const data  = encoder.encode(text)
+    const buffer = await crypto.subtle.digest('SHA-256', data)
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+    return base64.slice(0, 10);
 }
 
 function convert<T>(response: FetchResponse<T>): AppFetchResponse<T> {
@@ -26,25 +41,34 @@ function convert<T>(response: FetchResponse<T>): AppFetchResponse<T> {
 }
 
 export default defineNuxtPlugin(() => {
+    const app = useNuxtApp()
+
     const baseFetch = $fetch.create({
         baseURL: 'http://localhost:3001'
     })
 
     const restClient = async <T = object>(request: FetchRawParameters<T>[0], options?: FetchRawParameters<T>[1]): Promise<AppFetchResponse<T>> => {
         if (options?.isCache) {
-            const hash = ohash(request);
-            const cached = useState<AppFetchResponse<T> | null>(hash, () => {
-                return null
-            })
+            const requestUrl = isString(request) ? request : JSON.stringify(request.url)
+            const hash = await getHash(requestUrl)
 
-            if (isNull(cached.value)) {
-                const response = await baseFetch.raw<T>(request, {
-                    ...options,
+            return app.runWithContext(async () => {
+                const cached = useState<AppFetchResponse<T> | null>(hash, () => {
+                    return null
                 })
-                cached.value = convert(response)
-            }
 
-            return cached.value
+                if (isNull(cached.value)) {
+                    console.log('キャッシュに値が存在しません')
+                    const response = await baseFetch.raw<T>(request, {
+                        ...options,
+                    })
+                    cached.value = convert(response)
+                } else {
+                    console.log(`キャッシュ値を使用: ${hash}`)
+                }
+
+                return cached.value
+            })
         }
 
         const response = await baseFetch.raw<T>(request, {
