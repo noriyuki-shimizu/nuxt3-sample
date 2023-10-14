@@ -41,7 +41,6 @@ export default defineNuxtPlugin(() => {
                 const response = await baseFetch.raw<T>(request, {
                     ...options,
                 })
-                console.log('cache null. response: ', convert(response))
                 cached.value = convert(response)
             }
 
