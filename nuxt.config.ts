@@ -2,6 +2,5 @@
 export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
-  plugins: ['@/plugins/rest-client/index.ts'],
-  modules: ['@vueuse/nuxt']
+  plugins: ['@/plugins/rest-client/index.ts']
 })
